@@ -67,8 +67,12 @@ char **func_dynamic_massive()
         if(dynamic_massive[count] == NULL)
         {
             printf("allocate fail!\n");
-            free(dynamic_massive); /*а остальные строки и массив указателей, кто освобождать будет?*/
-            return dynamic_massive; /*зачем вовзращать не удачный массив? Так как ты его не NULL, но частично освободил, ф-ия получит указатель на память, подумает что все ок и упадет*/
+            free(dynamic_massive); 
+            for(int i = 0; i <= count; i++)
+            {
+                free(dynamic_massive[i]);
+            }
+            return dynamic_massive;
         }
 
         snprintf(dynamic_massive[count], length + 1, "%s", p_start);
@@ -81,6 +85,10 @@ char **func_dynamic_massive()
         {
             printf("realloc failed!\n");
             free(dynamic_massive);
+            for(int i = 0; i <= count; i++)
+            {
+                free(dynamic_massive[i]);
+            }
             return dynamic_massive;
         }
 
@@ -109,5 +117,7 @@ int main()
 
     return 0;
 }
+
+//Тесты
 //abcdcba abcdcba abcdcba abcdcba
 //abab abcdcba abcdcba abcdcba abcdcba qwertytrewq ghjklkjhg kek
