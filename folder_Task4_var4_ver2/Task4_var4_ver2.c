@@ -67,12 +67,12 @@ char **func_dynamic_massive()
         if(dynamic_massive[count] == NULL)
         {
             printf("allocate fail!\n");
-            free(dynamic_massive); 
-            for(int i = 0; i <= count; i++)
+            for(int i = count; i >= 0; i--)
             {
                 free(dynamic_massive[i]);
             }
-            return dynamic_massive;
+            free(dynamic_massive); 
+            return NULL;
         }
 
         snprintf(dynamic_massive[count], length + 1, "%s", p_start);
@@ -84,19 +84,19 @@ char **func_dynamic_massive()
         if(massive_realloc == NULL)
         {
             printf("realloc failed!\n");
-            free(dynamic_massive);
-            for(int i = 0; i <= count; i++)
+            for(int i = count; i >= 0; i--)
             {
                 free(dynamic_massive[i]);
             }
-            return dynamic_massive;
+            free(dynamic_massive);
+            return NULL;
         }
 
         dynamic_massive = massive_realloc;
         printf("%s\n", dynamic_massive[count]);
         count++;
 
-        stop: p_end++;
+stop:   p_end++;
         p_start = p_end;
         length = 0;
         check = 0;
@@ -113,7 +113,11 @@ int main()
     char **main_massive;
 
     main_massive = func_dynamic_massive();
-    free(main_massive);
+
+    if(main_massive != NULL)
+    {
+        free(main_massive);//строки из функции func_dynamic_massive() здесь не надо освобождать?
+    }
 
     return 0;
 }
